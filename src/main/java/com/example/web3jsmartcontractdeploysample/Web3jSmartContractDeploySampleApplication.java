@@ -20,15 +20,21 @@ public class Web3jSmartContractDeploySampleApplication {
 
         Web3j web3j = Web3j.build(new HttpService("http://localhost:7545"));
         Credentials credentials = getCredentialsFromPrivateKey();
+
+        // deploy smart contract
         String contractAddress = deployContract(web3j, credentials);
 
         System.out.println("========================");
         System.out.println("contractAddress : " + contractAddress);
         System.out.println("========================");
 
+        // load target smart contract (need smart contract address)
         Auction targetContract = loadContract(contractAddress, web3j, credentials);
+
+        // call function of smart contract(setData)
         targetContract.setAuctionData("encodedAuctionData").send();
 
+        // call function of smart contract(getData)
         String receivedEncodedAuctionData = targetContract.getAuctionData().send();
         System.out.println("========================");
         System.out.println("receivedEncodedAuctionData : " + receivedEncodedAuctionData);
