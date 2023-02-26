@@ -26,6 +26,13 @@ public class Web3jSmartContractDeploySampleApplication {
         System.out.println("contractAddress : " + contractAddress);
         System.out.println("========================");
 
+        Auction targetContract = loadContract(contractAddress, web3j, credentials);
+        targetContract.setAuctionData("encodedAuctionData").send();
+
+        String receivedEncodedAuctionData = targetContract.getAuctionData().send();
+        System.out.println("========================");
+        System.out.println("receivedEncodedAuctionData : " + receivedEncodedAuctionData);
+        System.out.println("========================");
 
     }
 
@@ -37,6 +44,10 @@ public class Web3jSmartContractDeploySampleApplication {
         return Auction.deploy(web3j, credentials, GAS_PRICE, GAS_LIMIT)
                 .send()
                 .getContractAddress();
+    }
+
+    private static Auction loadContract(String contractAddress, Web3j web3j, Credentials credentials) {
+        return Auction.load(contractAddress, web3j, credentials, GAS_PRICE, GAS_LIMIT);
     }
 
 }
